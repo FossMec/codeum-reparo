@@ -86,7 +86,7 @@ const Drawer = styled(MuiDrawer, {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard() {
+export default function Dashboard({children}) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -163,9 +163,10 @@ export default function Dashboard() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          {children}
+          {/* <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              {/* Chart */}
+             
               <Grid item xs={12} md={8} lg={9}>
                 <Paper
                   sx={{
@@ -176,7 +177,7 @@ export default function Dashboard() {
                   }}
                 ></Paper>
               </Grid>
-              {/* Recent Deposits */}
+            
               <Grid item xs={12} md={4} lg={3}>
                 <Paper
                   sx={{
@@ -187,7 +188,7 @@ export default function Dashboard() {
                   }}
                 ></Paper>
               </Grid>
-              {/* Recent Orders */}
+         
               <Grid item xs={12}>
                 <Paper
                   sx={{ p: 2, display: "flex", flexDirection: "column" }}
@@ -195,7 +196,7 @@ export default function Dashboard() {
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
-          </Container>
+          </Container> */}
         </Box>
       </Box>
     </ThemeProvider>
