@@ -9,6 +9,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     // required: [false, "Please enter your product description!"],
   },
+  imglink: {
+    type: String,
+    
+  },
   category: {
     type: String,
     required: [true, "Please enter your product category!"],

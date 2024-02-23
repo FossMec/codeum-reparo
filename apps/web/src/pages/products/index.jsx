@@ -1,6 +1,9 @@
 import ProductCard from "@/components/ProductCard";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Box } from "@mui/material";
+import Dashboard from "@/Layouts/Layout";
+import SearchBar from "@/components/Searchbar";
 const index = () => {
   const [products, setProducts] = useState([]);
 
@@ -13,14 +16,21 @@ const index = () => {
       });
   }, []);
   return (
-    <div>
-      <h1>Products</h1>
-      <ul>
-        {products.map((product) => (
-          <ProductCard product={product} />
-        ))}
-      </ul>
-    </div>
+    <Dashboard>
+      <SearchBar products={products} />
+      <div>
+        <Box
+          display={"flex"}
+          flexDirection={"row"}
+          maxWidth={"100vw"}
+          justifyContent={"space-around"}
+        >
+          {products.map((product) => (
+            <ProductCard product={product} />
+          ))}
+        </Box>
+      </div>
+    </Dashboard>
   );
 };
 
