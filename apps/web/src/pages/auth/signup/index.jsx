@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
+import { useRouter } from "next/router";
 function Copyright(props) {
   return (
     <Typography
@@ -31,24 +32,34 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const router = useRouter();
+  const [error, setError] = React.useState(null);
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get("name"),
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    axios
-      .post("http://localhost:3001/api/v2/user/create-user", {
-        name: data.get("name"),
-        email: data.get("email"),
-        password: data.get("password"),
-      })
-      .then((res) => {
-        console.log(res);
-      });
-      
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/v2/user/create-user",
+        {
+          name: data.get("name"),
+          email: data.get("email"),
+          password: data.get("password"),
+        }
+      );
+
+      if (response.data.success) {
+        // Handle successful creation (e.g., redirect to home page)
+        console.log("User created successfully!");
+        router.push("/");
+      } else {
+        setError(response.data.message || "An unknown error occurred."); // Display specific or generic error message
+      }
+    } catch (error) {
+      // Handle network errors or other unexpected issues
+      console.error("Error:", error);
+      setError("Email already exists. Try Logging in."); // Generic error message
+    }
   };
 
   return (
@@ -69,6 +80,11 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          {error && (
+            <Typography variant="body2" color="error">
+              {error}
+            </Typography>
+          )}
           <Box
             component="form"
             onSubmit={handleSubmit}

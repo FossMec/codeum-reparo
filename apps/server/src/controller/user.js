@@ -3,7 +3,9 @@ const path = require("path");
 const router = express.Router();
 const User = require("../model/user");
 const sendToken = require("../utils/jwtToken");
+const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
+const { isAuthenticated } = require("../middleware/auth");
 router.post("/create-user", async (req, res, next) => {
   const { name, email, password } = req.body;
   console.log("name", name);
@@ -46,8 +48,28 @@ router.post(
           new ErrorHandler("Please provide the correct information", 400)
         );
       }
+      console.log("user", user);
 
       sendToken(user, 201, res);
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+router.get(
+  User,
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const users = await User.findById(req.user.id);
+      if (!users) {
+        return next(new ErrorHandler("User not found", 404));
+      }
+      res.status(200).json({
+        success: true,
+        users,
+      });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
     }

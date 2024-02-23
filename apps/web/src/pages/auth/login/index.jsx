@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useRouter } from "next/router";
+
 function Copyright(props) {
   return (
     <Typography
@@ -22,40 +23,44 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      <Link color="inherit" href="https://mui.com/"></Link> {"."}
+      <Link color="inherit" href="https://mui.com/"></Link>{" "}
+      {new Date().getFullYear()}
     </Typography>
   );
 }
-
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
   const router = useRouter();
-  const handleSubmit = (event) => {
+  const [error, setError] = React.useState(null);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get("name"),
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    axios
-      .post("http://localhost:3001/api/v2/user/user-login", {
-        email: data.get("email"),
-        password: data.get("password"),
-      })
-      .then((res) => {
-        if (res.data.success) {
-          console.log(res);
-          window.localStorage.setItem("token", res.data.token);
-          router.push("/");
-        } else {
-          console.log(res);
-        }
-        console.log(res);
-      });
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/v2/user/login-user",
+        {
+          email: data.get("email"),
+          password: data.get("password"),
+        },
+        { withCredentials: true }
+      );
+
+      if (response.data.success) {
+        console.log(response);
+        window.localStorage.setItem("token", response.data.token);
+        router.push("/");
+      } else {
+        setError(response.data.message);
+      }
+    } catch (error) {
+      // Handle network errors or other unexpected issues
+      console.error("Error:", error);
+      setError("Invalid Credentials. Please try again .");
+    }
   };
 
   return (
@@ -76,14 +81,17 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          {error && (
+            <Typography variant="body2" color="error">
+              {error}
+            </Typography>
+          )}
           <Box
             component="form"
             onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
-            {" "}
-           
             <TextField
               margin="normal"
               required

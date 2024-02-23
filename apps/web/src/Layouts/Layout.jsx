@@ -18,6 +18,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems, secondaryListItems } from "../components/listitems";
+import { RouteRounded } from "@mui/icons-material";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -86,11 +90,26 @@ const Drawer = styled(MuiDrawer, {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard({children}) {
+export default function Dashboard({ children }) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const router = useRouter();
+  useEffect(() => {
+    try {
+      axios
+        .get("http://localhost:3001/api/v2/user/getuser", {
+          withCredentials: true,
+        })
+        .then((response) => {
+          console.log(response.data);
+        });
+    } catch (error) {
+      console.error("Error:", error);
+      router.push("/auth/login");
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>

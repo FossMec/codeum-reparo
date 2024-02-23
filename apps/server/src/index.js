@@ -7,10 +7,6 @@ dotenv.config();
 
 const app = express();
 
-let corsOptions = {
-  origin: ["http://localhost:3000"],
-};
-app.use(cors(corsOptions));
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 
@@ -25,9 +21,18 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 connectDatabase();
-
+let corsOptions = {
+  origin: ["http://localhost:3000"],
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 const user = require("./controller/user");
+const product = require("./controller/product");
+
+//routes
 app.use("/api/v2/user", user);
+app.use("/api/v2/product", product);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
