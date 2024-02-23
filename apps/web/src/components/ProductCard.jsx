@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -6,6 +7,31 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 
 const ProductCard = ({ product }) => {
+  const [cartItems, setCartItems] = useState([]); // Assuming you have a state to store cart items
+
+  const handleAddToCart = async (product) => {
+    try {
+      // Make a request to your backend API to add the product to the cart
+      const response = await axios.post(
+        "http://localhost:3001/api/v2/user/add-to-cart",
+        {
+          productId: product._id,
+          quantity: 1, // Assuming adding 1 quantity each time
+          discount: product.discountPrice, // Assuming the product discount is available
+        },
+        { withCredentials: true } // Set withCredentials here
+      );
+
+      // Update the state or UI based on the response
+      setCartItems(response.data.cart.items);
+      alert("Product added to cart successfully!");
+    } catch (error) {
+      // Handle errors, e.g., show an error message
+      console.error("Error adding product to cart:", error);
+      alert("Failed to add product to cart. Please try again later.");
+    }
+  };
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -41,6 +67,10 @@ const ProductCard = ({ product }) => {
         </Typography>
         <Typography variant="body2">Stock: {product.stock}</Typography>
         <Button
+          onClick={() => {
+            handleAddToCart(product);
+            console.log("product", product);
+          }}
           variant="contained"
           disabled={product.stock === 0}
           sx={{ mt: 2 }}

@@ -2,6 +2,8 @@ const express = require("express");
 const path = require("path");
 const router = express.Router();
 const User = require("../model/user");
+const Cart = require("../model/cart");
+const Product = require("../model/product");
 const sendToken = require("../utils/jwtToken");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
@@ -51,6 +53,97 @@ router.post(
       console.log("user", user);
 
       sendToken(user, 201, res);
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+//add product to cart
+router.post(
+  "/add-to-cart",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      console.log("req.body", req.body);
+      const { productId, quantity, discount } = req.body;
+      const user = await User.findById(req.user.id);
+      const product = await Product.findById(productId);
+      if (!product) {
+        return next(new ErrorHandler("Product not found", 404));
+      }
+      let cart = await Cart.findOne({ userId: req.user.id });
+      if (cart) {
+        let item = cart.items.find((i) => i.productId == productId);
+        if (item) {
+          item.quantity = item.quantity + quantity;
+          item.discount = discount;
+          cart.items = cart.items;
+        } else {
+          cart.items.push({ productId, quantity, discount });
+        }
+        cart.totalPrice = cart.totalPrice + quantity * product.discountPrice;
+        cart = await cart.save({ validateBeforeSave: false });
+        res.status(200).json({
+          success: true,
+          cart,
+        });
+      } else {
+        const newCart = await Cart.create({
+          userId: req.user.id,
+          items: [{ productId, quantity, discount }],
+          totalPrice: quantity * product.discountPrice,
+        });
+        res.status(200).json({
+          success: true,
+          newCart,
+        });
+      }
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+//get cart items
+router.get(
+  "/get-cart-items",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const cart = await Cart.findOne({ userId: req.user.id });
+      if (!cart) {
+        return next(new ErrorHandler("Cart not found", 404));
+      }
+      res.status(200).json({
+        success: true,
+        cart,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+//delete cart item
+router.delete(
+  "/delete-cart-item/:id",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const cart = await Cart.findOne({ userId: req.user.id });
+      if (!cart) {
+        return next(new ErrorHandler("Cart not found", 404));
+      }
+      const item = cart.items.find((i) => i._id == req.params.id);
+      if (!item) {
+        return next(new ErrorHandler("Item not found", 404));
+      }
+      cart.items = cart.items.filter((i) => i._id != req.params.id);
+      cart.totalPrice = cart.totalPrice - item.quantity * item.discount;
+      await cart.save({ validateBeforeSave: false });
+      res.status(200).json({
+        success: true,
+        cart,
+      });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
     }

@@ -1,4 +1,5 @@
 import * as React from "react";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -33,7 +34,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        jzf21
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -145,6 +146,11 @@ export default function Dashboard({ children }) {
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <IconButton color="inherit">
+              <Badge badgeContent={0} color="secondary">
+                <AddShoppingCartIcon />
               </Badge>
             </IconButton>
           </Toolbar>

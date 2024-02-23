@@ -8,6 +8,7 @@ import {
   Card,
   CardContent,
   Typography,
+  CardMedia,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
@@ -36,14 +37,19 @@ const SearchBar = ({ products }) => {
         }}
       >
         <TextField
+          sx={{
+            "& fieldset": { border: "none" },
+          }}
           borderRadius={20}
           fullWidth
           placeholder="Search"
           value={searchTerm}
           onChange={handleChange}
+          InputLabelProps={{ shrink: true }}
+          outline="none"
           InputProps={{
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="start" sx={{ outline: "none" }}>
                 <IconButton size="large" disabled>
                   <SearchIcon />
                 </IconButton>
@@ -59,9 +65,15 @@ const SearchBar = ({ products }) => {
           ) : (
             filteredProducts.map((product) => (
               <Grid item key={product.id} xs={12}>
-                <Card variant="outlined">
+                <Card sx={{ display: "flex", alignContent: "center" }}>
+                  <CardMedia
+                    component="img"
+                    sx={{ width: 60, alignItems: "center" }}
+                    src={product.imglink} // Replace with your image URL
+                    alt={product.name}
+                  />
                   <CardContent>
-                    <Typography variant="h6">{product.name}</Typography>
+                    <Typography variant="h8">{product.name}</Typography>
                     <Typography variant="body2">
                       {product.description}
                     </Typography>
