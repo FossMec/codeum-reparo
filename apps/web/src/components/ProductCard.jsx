@@ -13,7 +13,7 @@ const ProductCard = ({ product }) => {
     try {
       // Make a request to your backend API to add the product to the cart
       const response = await axios.post(
-        "http://localhost:3001/api/v2/user/add-to-cart",
+        `${process.env.NEXT_PUBLIC_SERVER_API}/user/add-to-cart`,
         {
           productId: product._id,
           quantity: 1, // Assuming adding 1 quantity each time

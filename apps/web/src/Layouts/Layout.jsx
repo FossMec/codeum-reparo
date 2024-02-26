@@ -1,5 +1,6 @@
 import * as React from "react";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -15,14 +16,22 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Link from "@mui/material/Link";
+import Mail from "@mui/icons-material/Mail";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { mainListItems, secondaryListItems } from "../components/listitems";
-import { RouteRounded } from "@mui/icons-material";
+import { mainListItems, secondaryListItems } from "../components/listItems";
+import { Inbox, RouteRounded } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import axios from "axios";
+import {
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -100,7 +109,7 @@ export default function Dashboard({ children }) {
   useEffect(() => {
     try {
       axios
-        .get("http://localhost:3001/api/v2/user/getuser", {
+        .get(`${process.env.NEXT_PUBLIC_SERVER_API}/user/getuser`, {
           withCredentials: true,
         })
         .then((response) => {
@@ -111,6 +120,52 @@ export default function Dashboard({ children }) {
       router.push("/auth/login");
     }
   }, []);
+  const [openCart, setOpenCart] = React.useState(false);
+  const [cartItems, setCartItems] = React.useState([]);
+  function getCartItems() {
+    try {
+      axios
+        .get(`${NEXT_PUBLIC_SERVER_API}/api/v2/user/get-cart-items`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          // console.log(response.data.cart);
+          // setCartItems(response.data.cart.items);
+        });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  useEffect(() => {
+    getCartItems();
+  }, []);
+
+  const toggleDrawerCart = () => () => {
+    setOpenCart(!openCart);
+  };
+
+  const DrawerList = (
+    <Box
+      sx={{ width: 1050 }}
+      role="presentation"
+      onClick={toggleDrawerCart(false)}
+    >
+      <Divider />
+      <List>
+        {cartItems.map((items) => (
+          <ListItem key={items?.productId} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {/* {index % 2 === 0 ? <Mail /> : <Mail />} */}
+              </ListItemIcon>
+              <ListItemText primary={items.quantity} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -148,11 +203,14 @@ export default function Dashboard({ children }) {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton color="inherit">
+            <IconButton onClick={toggleDrawerCart} color="inherit">
               <Badge badgeContent={0} color="secondary">
-                <AddShoppingCartIcon />
+                <AddShoppingCartIcon onClick={toggleDrawerCart} />
               </Badge>
             </IconButton>
+            <Drawer open={open} onClose={toggleDrawerCart(false)}>
+              {DrawerList}
+            </Drawer>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>

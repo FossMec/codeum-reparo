@@ -110,7 +110,10 @@ router.get(
   isAuthenticated,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const cart = await Cart.findOne({ userId: req.user.id });
+      const cart = await Cart.findOne({ userId: req.user.id }).populate({
+        path: "items.productId",
+        select: "name imglink",
+      });
       if (!cart) {
         return next(new ErrorHandler("Cart not found", 404));
       }
@@ -124,6 +127,7 @@ router.get(
   })
 );
 //delete cart item
+
 router.delete(
   "/delete-cart-item/:id",
   isAuthenticated,
@@ -133,11 +137,13 @@ router.delete(
       if (!cart) {
         return next(new ErrorHandler("Cart not found", 404));
       }
-      const item = cart.items.find((i) => i._id == req.params.id);
+      console.log(cart);
+      const item = cart.items.find((i) => i.productId.equals(req.params.id));
       if (!item) {
         return next(new ErrorHandler("Item not found", 404));
       }
-      cart.items = cart.items.filter((i) => i._id != req.params.id);
+      cart.items = cart.items.filter((i) => !i.productId.equals(req.params.id));
+      console.log("cart.items", cart.items);
       cart.totalPrice = cart.totalPrice - item.quantity * item.discount;
       await cart.save({ validateBeforeSave: false });
       res.status(200).json({

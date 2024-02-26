@@ -9,7 +9,7 @@ const index = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/v2/product/get-all-products")
+      .get(`${NEXT_PUBLIC_SERVER_API}/product/get-all-products`)
       .then((response) => {
         console.log(response.data);
         setProducts(response.data.products);

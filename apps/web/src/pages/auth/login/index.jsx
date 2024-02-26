@@ -41,7 +41,7 @@ export default function SignIn() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/v2/user/login-user",
+        `${NEXT_PUBLIC_SERVER_API}/api/v2/user/login-user`,
         {
           email: data.get("email"),
           password: data.get("password"),

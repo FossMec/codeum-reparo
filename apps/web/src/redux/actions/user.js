@@ -7,7 +7,7 @@ export const loadUser = () => async (dispatch) => {
     dispatch({
       type: "LoadUserRequest",
     });
-    const { data } = await axios.get(`http://localhost:3001/api/v2/user/getuser`, {
+    const { data } = await axios.get(`${NEXT_PUBLIC_SERVER_API}/user/getuser`, {
       withCredentials: true,
     });
     dispatch({
