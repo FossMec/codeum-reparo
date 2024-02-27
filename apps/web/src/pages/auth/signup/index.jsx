@@ -40,7 +40,7 @@ export default function SignIn() {
 
     try {
       const response = await axios.post(
-        `${NEXT_PUBLIC_SERVER_API}/user/create-user`,
+        `${process.env.NEXT_PUBLIC_SERVER_API}/user/create-user`,
         {
           name: data.get("name"),
           email: data.get("email"),

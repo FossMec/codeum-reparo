@@ -11,7 +11,7 @@ const index = () => {
   const handleRemoveFromCart = async (productId) => {
     try {
       await axios.delete(
-        `${NEXT_PUBLIC_SERVER_API}/user/delete-cart-item/${productId}`,
+        `${process.env.NEXT_PUBLIC_SERVER_API}/user/delete-cart-item/${productId}`,
         {
           withCredentials: true,
         }
@@ -34,7 +34,7 @@ const index = () => {
   function getCartItems() {
     try {
       axios
-        .get(`${NEXT_PUBLIC_SERVER_API}/user/get-cart-items`, {
+        .get(`${process.env.NEXT_PUBLIC_SERVER_API}/user/get-cart-items`, {
           withCredentials: true,
         })
         .then((response) => {
