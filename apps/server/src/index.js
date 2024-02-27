@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 });
 connectDatabase();
 let corsOptions = {
-  origin: ["http://localhost:3000",process.env.CLIENT_URL],
+  origin: [process.env.CLIENT_URL],
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
