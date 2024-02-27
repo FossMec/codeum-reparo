@@ -125,7 +125,7 @@ export default function Dashboard({ children }) {
   function getCartItems() {
     try {
       axios
-        .get(`${process.env.NEXT_PUBLIC_SERVER_API}/api/v2/user/get-cart-items`, {
+        .get(`${process.env.NEXT_PUBLIC_SERVER_API}/user/get-cart-items`, {
           withCredentials: true,
         })
         .then((response) => {
