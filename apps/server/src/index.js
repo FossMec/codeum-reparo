@@ -22,10 +22,11 @@ app.get("/", (req, res) => {
 });
 connectDatabase();
 let corsOptions = {
-  origin: "*",
+  origin: process.env.CLIENT_URL,
   credentials: true,
   optionSuccessStatus: 200,
 };
+console.log(process.env.CLIENT_URL);
 app.use(cors(corsOptions));
 const user = require("./controller/user");
 const product = require("./controller/product");
