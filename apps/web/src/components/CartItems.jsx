@@ -73,6 +73,9 @@ const CartCard = ({ product, onRemoveFromCart, onQtyChange }) => {
                   color: "blue",
                   borderRadius: "0",
                   border: "1px solid blue",
+                  "&:hover": {
+                    backgroundColor: "blue",
+                  }
                 }}
               >
                 <RemoveIcon />
@@ -90,6 +93,9 @@ const CartCard = ({ product, onRemoveFromCart, onQtyChange }) => {
                   color: "blue",
                   borderRadius: "0",
                   border: "1px solid blue",
+                  "&:hover": {
+                    backgroundColor: "blue",
+                  }
                 }}
               >
                 <AddIcon />
