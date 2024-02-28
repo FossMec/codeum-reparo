@@ -106,20 +106,7 @@ export default function Dashboard({ children }) {
     setOpen(!open);
   };
   const router = useRouter();
-  useEffect(() => {
-    try {
-      axios
-        .get(`${process.env.NEXT_PUBLIC_SERVER_API}/user/getuser`, {
-          withCredentials: true,
-        })
-        .then((response) => {
-          console.log(response.data);
-        });
-    } catch (error) {
-      console.error("Error:", error);
-      router.push("/auth/login");
-    }
-  }, []);
+
   const [openCart, setOpenCart] = React.useState(false);
   const [cartItems, setCartItems] = React.useState([]);
   function getCartItems() {
@@ -138,9 +125,22 @@ export default function Dashboard({ children }) {
   }
 
   useEffect(() => {
-    getCartItems();
+    axios
+      .get(`${process.env.NEXT_PUBLIC_SERVER_API}/user/getuser`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          console.error("Unauthorized: Redirecting to login page");
+          router.push("/auth/login");
+        } else {
+          console.error("Error:", error);
+        }
+      });
   }, []);
-
   const toggleDrawerCart = () => () => {
     setOpenCart(!openCart);
   };

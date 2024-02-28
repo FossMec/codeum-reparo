@@ -174,5 +174,52 @@ router.get(
     }
   })
 );
+//user address
+router.put(
+  "/update-user-address",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.user.id);
 
+      const sameTypeAddress = user.addresses.find(
+        (address) => address.addressType === req.body.addressType
+      );
+
+      if (sameTypeAddress) {
+        // Update the existing address with the new data
+        Object.assign(sameTypeAddress, req.body);
+      } else {
+        const existsAddress = user.addresses.find(
+          (address) => address._id === req.body._id
+        );
+
+        if (existsAddress) {
+          // Update the existing address with the new data
+          Object.assign(existsAddress, req.body);
+        } else {
+          // Add the new address to the array
+          user.addresses.push(req.body);
+        }
+      }
+
+      await user.save();
+
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+router.get("/get-user-address", isAuthenticated, async (req, res) => {
+  const user = await User.findById(req.user.id);
+  res.status(200).json({
+    success: true,
+    user,
+  });
+}
+);
 module.exports = router;

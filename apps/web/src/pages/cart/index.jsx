@@ -4,8 +4,9 @@ import axios from "axios";
 import { Box, Button } from "@mui/material";
 import Dashboard from "@/Layouts/Layout";
 import CartCard from "@/components/CartItems";
-
+import { useRouter } from "next/router";
 const index = () => {
+  const router = useRouter();
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = React.useState([]);
   const handleRemoveFromCart = async (productId) => {
@@ -68,7 +69,13 @@ const index = () => {
           ))}
         </Box>
 
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            router.push("/checkout");
+          }}
+        >
           Proceed to checkout
         </Button>
       </div>
