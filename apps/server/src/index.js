@@ -17,13 +17,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var whitelist = [
   "http://localhost:3000",
   "http://localhost:3001",
+  "https://codeum-reparo-web.vercel.app"
   process.env.CLIENT_URL,
 ];
 var corsOptions = {
-  origin: process.env.CLIENT_URL,
+  origin: whitelist,
   credentials: true,
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  preflightContinue: false,
   optionsSuccessStatus: 200,
 };
 
