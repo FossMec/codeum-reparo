@@ -65,7 +65,7 @@ export default function Review() {
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            $34.06
+            ₹{cartItems.reduce((acc, product) => acc + product.discount, 0)}    
           </Typography>
         </ListItem>
       </List>
