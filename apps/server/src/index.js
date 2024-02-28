@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var whitelist = [
   "http://localhost:3000",
   "http://localhost:3001",
-  "https://codeum-reparo-web.vercel.app"
+  "https://codeum-reparo-web.vercel.app",
   process.env.CLIENT_URL,
 ];
 var corsOptions = {
@@ -31,7 +31,14 @@ app.use(cors(corsOptions));
 
 app.use(ErrorHandler);
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Max-Age", "1800");
+  res.setHeader("Access-Control-Allow-Headers", "content-type");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+  );
 });
 connectDatabase();
 
