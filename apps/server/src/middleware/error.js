@@ -39,6 +39,9 @@ module.exports = (err, req, res, next) => {
   }
 
   if (process.env.NODE_ENV === "PRODUCTION") {
+    console.log(err);
+    console.log(err.stack);
+
     let error = { ...err };
     error.message = err.message;
     res.status(error.statusCode).json({
