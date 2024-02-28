@@ -27,6 +27,10 @@ var corsOptions = {
       callback(new Error("Not allowed by CORS"));
     }
   },
+  credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 200,
 };
 
 console.log(process.env.CLIENT_URL);
