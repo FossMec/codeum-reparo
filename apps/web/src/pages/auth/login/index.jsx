@@ -24,7 +24,7 @@ function Copyright(props) {
       {...props}
     >
       <Link color="inherit" href="https://mui.com/"></Link>{" "}
-      {new Date().getFullYear()}
+      {new Date().getFullYear() +1}
     </Typography>
   );
 }
@@ -75,7 +75,7 @@ export default function SignIn() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "blue" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">

@@ -36,9 +36,12 @@ const ProductCard = ({ product }) => {
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
-        height="200"
+        height="150"
         src={product.imglink} // Replace with your image URL
         alt={product.name}
+        sx={{
+          width: "200%"
+        }}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
