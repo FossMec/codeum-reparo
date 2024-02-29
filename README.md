@@ -1,5 +1,6 @@
-To run both server and client 
-Run the following command:
+### Running the Server and Client
+
+To run both the server and client, follow these steps:
 
 ```sh
 git clone <repo link>
@@ -7,76 +8,38 @@ cd codeum-reparo
 npm i
 npm run dev
 ```
-The nextjs app is present in apps/web
-and Express server is in apps/server
 
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
+The Next.js app is located in `apps/web`, and the Express server is in `apps/server`.
 
 ### Apps and Packages
 
-- `server`: an Express server
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+This Turborepo contains the following packages/apps:
 
+- `server`: Express server
+- `web`: [Next.js](https://nextjs.org/) app
 
+### Bug Reporting Guidelines
 
-### Utilities
+1. **Fork the Repository:**
+   Each team should fork the repository to their own GitHub account for codebase review and bug tracking.
 
-This Turborepo has some additional tools already setup for you:
+2. **Raise Issues:**
+   Teams should raise issues in the GitHub repository they have forked. Each bug report must include:
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+   - **Bug Description:**
+     A clear and concise description of the encountered bug.
 
-### Build
+   - **Screenshot:**
+     A screenshot of the functional/UI bug.
 
-To build all apps and packages, run the following command:
+   - **Recreation Steps:**
+     Clearly outline steps to recreate the bug. This helps in identifying and fixing the issue efficiently.
 
-```
-cd my-turborepo
-pnpm build
-```
+3. **Scoring System:**
+   - **Functional Bugs: 5 points**
+     - These bugs affect the application's core functionality (e.g., incorrect calculations, logic errors, or failure to perform expected tasks).
 
-### Develop
+   - **UI/UX Bugs: 3 points**
+     - These bugs relate to problems with the user interface (e.g., layout issues, broken styling, or improper rendering of elements, which may affect the user experience).
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+By adhering to these guidelines, teams can efficiently report and track bugs in the codebase, ensuring a smoother debugging process.
